@@ -17,7 +17,7 @@ RUN git clone https://github.com/llvm/llvm-project.git
 ENV LLVM_SRC_PATH=llvm-project/llvm
 ENV GOLLVM_SRC_PATH=$LLVM_SRC_PATH/tools/gollvm
 
-RUN git clone https://go.googlesource.com/gollvm $LLVM_SRC_PATH/tools
+RUN git clone https://go.googlesource.com/gollvm $LLVM_SRC_PATH/tools/gollvm
 RUN git clone https://go.googlesource.com/gofrontend $GOLLVM_SRC_PATH/gofrontend
 
 RUN git clone https://github.com/libffi/libffi.git $GOLLVM_SRC_PATH/libgo/libffi
