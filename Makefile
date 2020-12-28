@@ -1,6 +1,5 @@
 clean:
-	docker rmi gollvm:base
-	docker rmi gollvm:latest
+	docker rmi gollvm:latest || true
 
 gollvm:
 	docker build -t gollvm:latest -f Dockerfile .
