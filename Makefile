@@ -1,5 +1,5 @@
 clean:
-	docker rm $(docker ps -aq)
+	docker rm $(shell docker ps -aq)
 	docker rmi -f gollvm:latest || true
 
 gollvm:
