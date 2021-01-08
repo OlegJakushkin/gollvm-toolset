@@ -7,7 +7,7 @@ RUN apt update && apt install -y build-essential wget cmake git python3 ninja-bu
 
 RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.0/cmake-3.18.0.tar.gz && \
 	tar -xvf cmake-3.18.0.tar.gz && mkdir cmake_build && cd cmake_build && \
-	cmake ../cmake-3.18.0 && make -j16 && make install
+	cmake ../cmake-3.18.0 && make && make install
 
 WORKDIR /root/
 
@@ -34,4 +34,4 @@ RUN git clone https://github.com/ianlancetaylor/libbacktrace.git $GOLLVM_SRC_PAT
 ENV BUILD_DIR=llvm-project/release
 RUN mkdir -p $BUILD_DIR && cd $BUILD_DIR && \
 	cmake ../llvm -DCMAKE_BUILD_TYPE=Release -DLLVM_TARGETS_TO_BUILD=X86 -DLLVM_ENABLE_ASSERTIONS=On -DLLVM_ENABLE_RTTI=On -DLLVM_USE_LINKER=gold -G Ninja && \
-	ninja gollvm -j8 && ninja install-gollvm && ninja install
+	ninja gollvm && ninja install-gollvm && ninja install
