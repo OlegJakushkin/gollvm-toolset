@@ -1,4 +1,4 @@
-from ubuntu:18.04
+FROM ubuntu:18.04
 
 ENV TZ Asia/Shanghai
 RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
@@ -11,11 +11,19 @@ RUN wget https://github.com/Kitware/CMake/releases/download/v3.18.0/cmake-3.18.0
 
 WORKDIR /root/
 
-RUN git clone https://github.com/llvm/llvm-project.git
+ARG USING_PROXY
+RUN if [ -z "$USING_PROXY" ] ; then \
+	git clone https://github.com/llvm/llvm-project.git ; else \
+	git clone https://mirrors.tuna.tsinghua.edu.cn/git/llvm-project.git ; fi
 
 ENV LLVM_SRC_PATH=llvm-project/llvm
 ENV GOLLVM_SRC_PATH=$LLVM_SRC_PATH/tools/gollvm
 
+RUN if [ -n "$USING_PROXY" ] ; then \
+	git config --global http.https://go.googlesource.com.proxy $USING_PROXY && \
+	git config --global https.https://go.googlesource.com.proxy $USING_PROXY ; fi
+
+ARG TIME_STAMP
 RUN git clone https://go.googlesource.com/gollvm $LLVM_SRC_PATH/tools/gollvm
 RUN git clone https://go.googlesource.com/gofrontend $GOLLVM_SRC_PATH/gofrontend
 
