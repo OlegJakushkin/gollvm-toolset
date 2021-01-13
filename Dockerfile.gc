@@ -1,0 +1,25 @@
+FROM ubuntu:18.04
+
+ENV TZ Asia/Shanghai
+RUN ln -snf /usr/share/zoneinfo/$TZ /etc/localtime && echo $TZ > /etc/timezone
+
+RUN apt update && apt install -y build-essential wget cmake git python3 libssl-dev
+
+WORKDIR /root/
+
+ARG USING_PROXY
+
+RUN if [ -z "$USING_PROXY" ] ; then \
+	wget https://golang.org/dl/go1.16beta1.linux-amd64.tar.gz -O go1.16beta1.tar.gz; else \
+	wget https://mirrors.ustc.edu.cn/golang/go1.16beta1.linux-amd64.tar.gz -O go1.16beta1.tar.gz; fi
+
+# RUN wget -e use_proxy=yes -e https_proxy=${USING_PROXY} https://golang.org/dl/go1.16beta1.linux-amd64.tar.gz -o go1.16beta1.tar.gz
+
+RUN /bin/bash -c "diff <(echo `sha256sum go1.16beta1.tar.gz`) <(echo 3931a0d493d411d6c697df6f15d5292fdd8031fde7014fded399effdad4c12d8 go1.16beta1.tar.gz)"
+
+RUN tar -C /usr/local -xzf go1.16beta1.tar.gz
+ENV PATH=/usr/local/go/bin:${PATH}
+
+RUN if [ -n "$USING_PROXY" ] ; then \
+	go env -w GO111MODULE=on && \
+	go env -w GOPROXY=https://goproxy.cn,direct ; fi

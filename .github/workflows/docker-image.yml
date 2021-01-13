@@ -9,10 +9,14 @@ on:
 jobs:
 
   build:
-
-    runs-on: ubuntu-latest
+    name: Validate the Dockerfiles
+    runs-on: ubuntu-20.04
 
     steps:
+    - name: Build a gc environment
     - uses: actions/checkout@v2
-    - name: Build gollvm
-      run: docker build . --file Dockerfile --tag gollvm:$(date +%s)
+      run: docker build . --file Dockerfile.gc --tag gc:$(date +%s)
+
+    - name: Build a gollvm environment
+    - uses: actions/checkout@v2
+      run: docker build . --file Dockerfile.gollvm --tag gollvm:$(date +%s)
