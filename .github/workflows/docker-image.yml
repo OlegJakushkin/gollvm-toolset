@@ -15,8 +15,7 @@ jobs:
     steps:
     - uses: actions/checkout@v2
     - name: Build a gc environment
-    - run: docker build . --file Dockerfile.gc --tag gc:$(date +%s)
+      run: docker build . --file Dockerfile.gc --tag gc:$(date +%s)
 
-    - uses: actions/checkout@v2
     - name: Build a gollvm environment
-    - run: docker build . --file Dockerfile.gollvm --tag gollvm:$(date +%s)
+      run: docker build . --file Dockerfile.gollvm --tag gollvm:$(date +%s)
